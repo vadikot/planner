@@ -1,0 +1,19 @@
+$body-color: blue;
+
+h1 {
+  color: $body-color;
+}
+
+h2 {
+  color: lightseagreen;
+}
+
+.input__error {
+  border: 2px solid red;
+}
+.btn {
+  padding: 2px 5px;
+  border: 1px solid black; display: inline-flex;
+  border-radius: 4px;
+  cursor: pointer;
+}
