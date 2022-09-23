@@ -59,7 +59,7 @@ export const categoryForm = {
                 formElements['description'].value = '';
 
                 const categoryListEl = document.querySelector('.category__list');
-                categoryListEl.innerHTML=this.categoryList.render(true)
+                categoryListEl.innerHTML = this.categoryList.render('list');
             }
 
         } catch (e) {

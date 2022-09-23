@@ -12,81 +12,25 @@ const data = new Data();
 const taskList = new TaskList(data.getByName('tasks'));
 const categoryList = new CategoryList(data.getByName('categories'));
 const appEl = document.querySelector('.app .app__container');
-//
-// const categoryAddHandler = function (event) {
-//     event.preventDefault();
-//
-//     console.log(taskList);
-//     console.log(event.target);
-// }
 
 
 appEl.insertAdjacentHTML('beforeend', taskList.render());
-appEl.insertAdjacentHTML('beforeend', categoryList.render());
-// appEl.insertAdjacentHTML('beforeend', categoryForm.render(categoryList));
+appEl.insertAdjacentHTML('beforeend', categoryList.render('block'));
+categoryList.addHandler();
 
 
+// create & add form for categories
 categoryForm.render('.categories', categoryList);
-// categoryForm.render('.category__list', true, categoryAddHandler, taskList);
+// create & add select element for categories
+appEl.insertAdjacentHTML('beforeend', categoryList.render('select'));
 
+// show all categories in console with by clicking on article
 
-
-
-const categoryArticle = document.querySelector('.category__article');
-window.onload = (event)=> {
-    console.log('document is ready');
-    categoryArticle.addEventListener('click', showAllCategories);
-}
-function showAllCategories (){
-    console.log(categoryList.getAllItems());
-}
-
-
-
-// const delFormBtn = `<div class="del__form__btn" onclick="test()">del</div>`
-//
-// appEl.insertAdjacentHTML('beforeend', delFormBtn);
-//
-// document.querySelector('.del__form__btn').onclick = test;
-//
-// function test() {
-// console.log('element removed');
+// const categoryArticle = document.querySelector('.category__article');
+// window.onload = (event)=> {
+//     console.log('document is ready');
+//     categoryArticle.addEventListener('click', showAllCategories);
 // }
-
-
-import Goal from "./Components/Goal";
-
-const testGoal = new Goal('проверка', 179);
-console.log(testGoal.showTimeToFinish());
-
-//
-// class Animal {
-//     name;
-//     constructor() {
-//     }
-//
-//     showName() {
-//         console.log(this.name);
-//     }
+// function showAllCategories (){
+//     console.log(categoryList.getAllItems());
 // }
-//
-// class Cat extends Animal {
-//     constructor(name, value) {
-//         super();
-//         this.name = name + 1;
-//         this.field = this.setField(value)
-//     }
-//     isCat = true;
-//
-//     setField(value) {
-//         return value *2;
-//     }
-//     meow() {
-//         console.log('meow');
-//     }
-// }
-//
-// let newCat = new Cat('zefir', 2);
-//
-// console.log(newCat);
-// newCat.showName();
