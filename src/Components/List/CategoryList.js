@@ -17,66 +17,54 @@ export default class CategoryList extends List {
         this._items.push(newTask);
     }
 
-    del() {
-        const btns = document.querySelectorAll('.category__item__btn-remove');
-        // console.log(btns);
-
-        // console.log('category removed')
-
-        // user = el.dataset.user;
-
-    }
-
-    updateListOnPage() {
+    updateAllNodeItems() {
         const categoryListEl = document.querySelector('.category__list');
         categoryListEl.innerHTML=this.render('list');
     }
 
+    updateNodeItem() {}
+
     listener(event) {
+        const clickedItemID = event.target.dataset.id;
+
         if (event.target.classList.contains('category__item__btn-remove')) {
-
-            const categoryArrayIndex = this._items.findIndex(item => item.id === parseInt(event.target.dataset.id));
-            this._items.splice(categoryArrayIndex, 1);
-
-            this.updateListOnPage();
+            this.removeItemById(clickedItemID);
+            this.updateAllNodeItems();
         }
 
         if (event.target.classList.contains('category__item__btn-edit')) {
-            const categoryArrayIndex = this._items.findIndex(item => item.id === parseInt(event.target.dataset.id));
-            let changedCategory = this.getAllItems()[categoryArrayIndex];
-            let changeForm=`
-                            <form class="category__form-edit" name="categoryForm${changedCategory.id}">
-                                <input class="category__form__input category__form__input-edit input" type="text" placeholder="title" name="title" value="${changedCategory.title}">
-                                <input class="category__form__input category__form__input-edit input" type="text" placeholder="description" name="description" value="${changedCategory.description}">
-                                <div class="save-btn btn" data-id="${changedCategory.id}">Save</div>
-                            </form>
-                            `;
-
-            let parent = event.target.closest('.category__list__item');
-            parent.insertAdjacentHTML('afterbegin',changeForm);
+            this.openCategoryEditForm(clickedItemID, event);
         }
+
         if (event.target.classList.contains('save-btn')) {
-            this.saveChanges(event.target.dataset.id);
+            this.saveChanges(clickedItemID);
         }
 
     }
 
+     openCategoryEditForm(id, event) {
+         const changedCategory = this.getItemById(id)
+         const categoryEditForm= this.render('categoryEditForm', changedCategory);
+         const changedItemEl = event.target.closest('.category__list__item');
+
+         changedItemEl.insertAdjacentHTML('afterbegin',categoryEditForm);
+     }
+
     saveChanges(id) {
-        const categoryArrayIndex = this._items.findIndex(item => item.id === parseInt(id));
-        let changedCategory = this.getAllItems()[categoryArrayIndex];
-        let formName = 'categoryForm'+id;
+        const changedCategory = this.getItemById(id)
+        const formName = 'categoryForm'+id;
         const formElements = document.forms[formName].elements;
 
         changedCategory.title = formElements['title'].value;
         changedCategory.description = formElements['description'].value;
 
-        //Update categories on page
-        this.updateListOnPage();
+        this.updateAllNodeItems();
     }
 
     addHandler() {
-        console.log(document.querySelector('.categories'));
         document.querySelector('.categories').onclick = this.listener.bind(this);
+        // added listener on all categories (2 or more)
+        // document.querySelectorAll('.categories').forEach(item=> item.onclick = this.listener.bind(this));
     }
 
     parseDataToObj(items) {
@@ -85,27 +73,42 @@ export default class CategoryList extends List {
         });
     }
 
-    render(type) {
-        // setTimeout(() => this.del(), 500);
-
-        switch (type) {
-            case 'block':
-                return `
-                        <div class="categories">
-                            <h2 class="category__article atricle">Categories items:</h2>
-                            <ul class='category__list list'>
-                                ${this.renderItems()}
-                            </ul>
-                        </div>
-                        `;
-            case 'list':
-                return `${this.renderItems()}`;
-            case 'select':
-                return `
-                        <select name="categories">
-                            ${this.getAllItems().reduce((str,item)=> str+'<option value="'+item.id+'">'+item.title+'</option>', '')}
-                        </select>
-                        `;
-        }
+    render(templateName, ...args) {
+        return this.templates[templateName](this, ...args);
     }
+
+    templates = {
+        block(that) {
+            return `
+                    <div class="categories">
+                        <h2 class="category__article atricle">Categories items:</h2>
+                        <ul class='category__list list'>
+                            ${that.renderItems()}
+                        </ul>
+                    </div>
+                   `;
+        },
+
+        list(that) {
+            return that.renderItems();
+        },
+
+        select(that){
+            return `
+                    <select name="categories">
+                        ${that.getAllItems().reduce((str,item)=> str+'<option value="'+item.id+'">'+item.title+'</option>', '')}
+                    </select>
+                   `
+        },
+
+        categoryEditForm(that, category) {
+            return `
+                    <form class="category__form-edit" name="categoryForm${category.id}">
+                        <input class="category__form__input category__form__input-edit input" type="text" placeholder="title" name="title" value="${category.title}">
+                        <input class="category__form__input category__form__input-edit input" type="text" placeholder="description" name="description" value="${category.description}">
+                        <div class="save-btn btn" data-id="${category.id}">Save</div>
+                    </form>
+                   `;
+        },
+    };
 }

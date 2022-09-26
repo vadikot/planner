@@ -3,18 +3,18 @@ import "./style.scss";
 
 /*  JS Classes import   */
 import Data from "./Components/Data";
-import TaskList from "./Components/List/TaskList";
+// import TaskList from "./Components/List/TaskList";
 import CategoryList from "./Components/List/CategoryList";
 import {categoryForm} from "./Components/Forms/CategoryForm";
 
 /*  Data   */
 const data = new Data();
-const taskList = new TaskList(data.getByName('tasks'));
+// const taskList = new TaskList(data.getByName('tasks'));
 const categoryList = new CategoryList(data.getByName('categories'));
 const appEl = document.querySelector('.app .app__container');
 
 
-appEl.insertAdjacentHTML('beforeend', taskList.render());
+// appEl.insertAdjacentHTML('beforeend', taskList.render());
 appEl.insertAdjacentHTML('beforeend', categoryList.render('block'));
 categoryList.addHandler();
 

@@ -10,6 +10,18 @@ export default class List {
         }
     }
 
+    getIndexById(id) {
+        return this._items.findIndex(item => parseInt(item.id) === parseInt(id));
+    }
+
+    removeItemById(id) {
+        this._items.splice(this.getIndexById(id), 1);
+    }
+
+    getItemById(id) {
+        return this._items[this.getIndexById(id)];
+    }
+
     // get items() {
     // }
     // set items(value) {

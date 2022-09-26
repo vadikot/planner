@@ -3,7 +3,7 @@ export const categoryForm = {
             <form class="category__form" name="categoryForm">
                 <input class="category__form__input input" type="text" placeholder="title" name="title" required>
                 <input class="category__form__input input" type="text" placeholder="description" name="description">
-                <button class="category__form__btn" type="submit">add</button>
+                <button class="category__form__btn-add" type="submit">add</button>
                 <div class="category__form__btn-close btn">Close form</div>
             </form>
         `,
@@ -38,15 +38,15 @@ export const categoryForm = {
         formElements['description'].classList.remove('input__error');
     },
 
-    add(event) {
+    addCategory(event) {
         try {
             event.preventDefault();
             const formElements = document.forms['categoryForm'].elements;
             const fieldsState = this.isFieldsEmpty(formElements);
 
-            if (fieldsState.isEmpty) {
-                this.removeErrorClass(formElements);
+            this.removeErrorClass(formElements);
 
+            if (fieldsState.isEmpty) {
                 for (let field of fieldsState.fields) {
                     if (!formElements[field].classList.contains('input__error')) {
                         formElements[field].classList.add('input__error')
@@ -54,7 +54,6 @@ export const categoryForm = {
                 }
             } else {
                 this.categoryList.addNewCategory(fieldsState.fields.title, fieldsState.fields.description);
-                this.removeErrorClass(formElements);
                 formElements['title'].value = '';
                 formElements['description'].value = '';
 
@@ -69,13 +68,14 @@ export const categoryForm = {
 
     closeForm() {
         console.log('form closes');
-        // this.addBtnEl.removeEventListener('click', this.add);
+    },
 
-        // const delFormBtn = `<div class="del__form__btn" onclick="test()">del</div>`
-        //
-        // appEl.insertAdjacentHTML('beforeend', delFormBtn);
-        //
-        // document.querySelector('.del__form__btn').onclick = test;
+    addListener() {
+        const formBtnEl_add = document.querySelector(`.category__form__btn-add`);
+        const formBtnEl_close = document.querySelector(`.category__form__btn-close`);
+
+        formBtnEl_add.addEventListener('click', this.addCategory.bind(this));
+        formBtnEl_close.onclick = this.closeForm.bind(this);
     },
 
     render(whereAddClassName, categoryList) {
@@ -84,10 +84,8 @@ export const categoryForm = {
             whereAddFormEl.insertAdjacentHTML('beforeend', this.template);
 
             this.categoryList = categoryList;
-            this.addBtnEl = document.querySelector(`.category__form__btn`);
-            this.addBtnEl.addEventListener('click', this.add.bind(this));
+            this.addListener();
 
-            document.querySelector('.category__form__btn-close').onclick = this.closeForm.bind(this);
         } catch (e) {
             console.error(e);
         }
