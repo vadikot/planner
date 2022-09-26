@@ -57,6 +57,8 @@ export const categoryForm = {
                 formElements['title'].value = '';
                 formElements['description'].value = '';
 
+                this.data.saveData('categories', this.categoryList.getAllItems());
+
                 const categoryListEl = document.querySelector('.category__list');
                 categoryListEl.innerHTML = this.categoryList.render('list');
             }
@@ -78,12 +80,13 @@ export const categoryForm = {
         formBtnEl_close.onclick = this.closeForm.bind(this);
     },
 
-    render(whereAddClassName, categoryList) {
+    render(whereAddClassName, data, categoryList) {
         try {
             const whereAddFormEl = document.querySelector(whereAddClassName);
             whereAddFormEl.insertAdjacentHTML('beforeend', this.template);
 
             this.categoryList = categoryList;
+            this.data = data;
             this.addListener();
 
         } catch (e) {
