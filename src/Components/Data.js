@@ -18,6 +18,12 @@ export default class Data {
         return this[methodName](data, type);
     }
 
+    saveToFile(type, data) {
+        const  jsonData = this.parseToJSON(data);
+
+        localStorage.setItem(type, jsonData);
+    }
+
     getFromFile() {
         return {
             tasks: taskArray,

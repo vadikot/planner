@@ -75,6 +75,14 @@ export const categoryForm = {
     addListener() {
         const formBtnEl_add = document.querySelector(`.category__form__btn-add`);
         const formBtnEl_close = document.querySelector(`.category__form__btn-close`);
+        //
+        // console.log(formBtnEl_add);
+        // let lol;
+        // setTimeout(() => {
+        //     lol = document.querySelector(`.category__form__btn-add`);
+        //     lol.addEventListener('click', this.addCategory.bind(this));
+        //     formBtnEl_close.onclick = this.closeForm.bind(this);
+        // }, 1000);
 
         formBtnEl_add.addEventListener('click', this.addCategory.bind(this));
         formBtnEl_close.onclick = this.closeForm.bind(this);
@@ -82,12 +90,19 @@ export const categoryForm = {
 
     render(whereAddClassName, data, categoryList) {
         try {
+
             const whereAddFormEl = document.querySelector(whereAddClassName);
             whereAddFormEl.insertAdjacentHTML('beforeend', this.template);
 
+            this.addListener();
+
+
             this.categoryList = categoryList;
             this.data = data;
-            this.addListener();
+
+
+            // setTimeout(() =>this.addListener(),0);
+
 
         } catch (e) {
             console.error(e);

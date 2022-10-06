@@ -24,23 +24,26 @@ export default class CategoryList extends List {
 
     updateNodeItem() {}
 
-    // listener(event) {
-    //     const clickedItemID = event.target.dataset.id;
-    //
-    //     if (event.target.classList.contains('category__item__btn-remove')) {
-    //         this.removeItemById(clickedItemID);
-    //         this.updateAllNodeItems();
-    //     }
-    //
-    //     if (event.target.classList.contains('category__item__btn-edit')) {
-    //         this.openCategoryEditForm(clickedItemID, event);
-    //     }
-    //
-    //     if (event.target.classList.contains('save-btn')) {
-    //         this.saveChanges(clickedItemID);
-    //     }
-    //
-    // }
+    // in listener we bind app this, otherwise we can't work with DATA object
+    handler(event) {
+        const clickedItemID = event.target.dataset.id;
+
+        if (event.target.classList.contains('category__item__btn-remove')) {
+            this.categoryList.removeItemById(clickedItemID);
+            this.categoryList.updateAllNodeItems();
+            this.data.saveData('categories', this.categoryList.getAllItems());
+        }
+
+        if (event.target.classList.contains('category__item__btn-edit')) {
+            this.categoryList.openCategoryEditForm(clickedItemID, event);
+        }
+
+        if (event.target.classList.contains('save-btn')) {
+            this.categoryList.saveChanges(clickedItemID);
+            this.data.saveData('categories', this.categoryList.getAllItems());
+        }
+
+    }
 
      openCategoryEditForm(id, event) {
          const changedCategory = this.getItemById(id)
@@ -59,13 +62,6 @@ export default class CategoryList extends List {
         changedCategory.description = formElements['description'].value;
 
         this.updateAllNodeItems();
-    }
-
-    addHandler(func) {
-        document.querySelector('.categories').onclick = func.bind(this);
-        // document.querySelector('.categories').onclick = this.listener.bind(this);
-        // added listener on all categories (2 or more)
-        // document.querySelectorAll('.categories').forEach(item=> item.onclick = this.listener.bind(this));
     }
 
     parseDataToObj(items) {
