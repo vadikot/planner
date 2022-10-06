@@ -38,7 +38,7 @@ export const categoryForm = {
         formElements['description'].classList.remove('input__error');
     },
 
-    addCategory(event) {
+    addCategory(event, thisApp) {
         try {
             event.preventDefault();
             const formElements = document.forms['categoryForm'].elements;
@@ -53,14 +53,14 @@ export const categoryForm = {
                     }
                 }
             } else {
-                this.categoryList.addNewCategory(fieldsState.fields.title, fieldsState.fields.description);
+                thisApp.categoryList.addNewCategory(fieldsState.fields.title, fieldsState.fields.description);
                 formElements['title'].value = '';
                 formElements['description'].value = '';
 
-                this.data.saveData('categories', this.categoryList.getAllItems());
+                thisApp.data.saveData('categories', thisApp.categoryList.getAllItems());
 
                 const categoryListEl = document.querySelector('.category__list');
-                categoryListEl.innerHTML = this.categoryList.render('list');
+                categoryListEl.innerHTML = thisApp.categoryList.render('list');
             }
 
         } catch (e) {
@@ -72,41 +72,21 @@ export const categoryForm = {
         console.log('form closes');
     },
 
-    addListener() {
-        const formBtnEl_add = document.querySelector(`.category__form__btn-add`);
-        const formBtnEl_close = document.querySelector(`.category__form__btn-close`);
-        //
-        // console.log(formBtnEl_add);
-        // let lol;
-        // setTimeout(() => {
-        //     lol = document.querySelector(`.category__form__btn-add`);
-        //     lol.addEventListener('click', this.addCategory.bind(this));
-        //     formBtnEl_close.onclick = this.closeForm.bind(this);
-        // }, 1000);
+    handler(event) {
 
-        formBtnEl_add.addEventListener('click', this.addCategory.bind(this));
-        formBtnEl_close.onclick = this.closeForm.bind(this);
-    },
-
-    render(whereAddClassName, data, categoryList) {
-        try {
-
-            const whereAddFormEl = document.querySelector(whereAddClassName);
-            whereAddFormEl.insertAdjacentHTML('beforeend', this.template);
-
-            this.addListener();
-
-
-            this.categoryList = categoryList;
-            this.data = data;
-
-
-            // setTimeout(() =>this.addListener(),0);
-
-
-        } catch (e) {
-            console.error(e);
+        if (event.target.classList.contains('category__form__btn-add')) {
+            this.categoryForm.addCategory(event, this);
         }
 
+        if (event.target.classList.contains('category__form__btn-close')) {
+            this.categoryForm.closeForm();
+
+        }
+    },
+
+    // maybe in feature write separate class for the FORMS
+    // & then we will need to use TYPE
+    render(type) {
+        return this.template;
     },
 };

@@ -25,6 +25,7 @@ export default class CategoryList extends List {
     updateNodeItem() {}
 
     // in listener we bind app this, otherwise we can't work with DATA object
+    // or better send "this" like "that"  -   ??????
     handler(event) {
         const clickedItemID = event.target.dataset.id;
 

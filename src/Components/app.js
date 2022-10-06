@@ -10,14 +10,20 @@ const app = {
 
             this.data = new Data('localstorage');
             this.categoryList = new CategoryList(this.data.getByName('categories'));
+            this.categoryForm = categoryForm;
 
             this.insertBlock('.first-block', 'category', 'block', true);
 
-            // this.insertBlock('.second-block', 'form', 'addCategory', true);
+
             // this.insertBlock('.second-block', 'category', 'addForm', true);
 
 
-            categoryForm.render('.categories', this.data, this.categoryList);
+
+            // categoryForm.render('.categories', this.data, this.categoryList);
+            this.insertBlock('.second-block', 'form', 'addCategory', true);
+
+
+
 
 
         } catch (e) {
@@ -63,7 +69,6 @@ const app = {
             }
             case 'form': {
                 usedObj = this.categoryForm;
-                categoryForm.render('.categories', this.data, this.categoryList);
                 break;
             }
             default: {
@@ -71,11 +76,13 @@ const app = {
             }
         }
 
+        // categoryForm.render('.categories', this.data, this.categoryList);
+
         createdElement.element = usedObj.render(type);
 
         if (isListener) {
-            if ('handler' in this.categoryList) {
-                createdElement.handler = this.categoryList.handler;
+            if ('handler' in usedObj) {
+                createdElement.handler = usedObj.handler;
             } else {
                 throw `Error in "returnElement" method; Listener not founded.`;
             }
