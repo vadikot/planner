@@ -4,7 +4,10 @@ export default class Task {
     constructor(title, description, category, date, isFinished, startTime, pauseTime, endTime, planningTime, complexity, order) {
         this.title = title;
         this.description = description;
-        this.order = order;
+        this.category = {
+            id: category.id,
+            title: category.title,
+        };
     }
 
     get title() {
@@ -19,6 +22,11 @@ export default class Task {
         this.title = value;
     }
     render() {
-        return `<li class='task__list__item item'>${this.title}. Описание: ${this.description}</li>`;
+        return `<li class='task__list__item item'>
+                    <p><b>${this.title}.</b> ${this.description}</p>
+                    <p>Категория: ${this.category.title}</p>
+                    <div class="task__item__btn-edit btn" data-id="${this.id}">edit</div>
+                    <div class="task__item__btn-remove btn" data-id="${this.id}">remove</div>
+                </li>`;
     }
 }

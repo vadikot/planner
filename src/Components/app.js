@@ -1,5 +1,6 @@
 import Data from "./Data";
 import CategoryList from "./List/CategoryList";
+import TaskList from "./List/TaskList";
 import {categoryForm} from "./Forms/CategoryForm";
 
 const app = {
@@ -8,8 +9,21 @@ const app = {
     init() {
         try {
 
-            this.data = new Data('localstorage');
+            // this.data = new Data('localstorage');
+            this.data = new Data('file');
+
             this.categoryList = new CategoryList(this.data.getByName('categories'));
+            this.insertBlock('.first-block', 'category', 'block', true);
+            // если вставлять форму намного ниже, то все работает, если это делать тут, то выбивает ошибку
+            setTimeout(()=>this.insertBlock('.second-block', 'form', 'addCategory', true),0); //ну или так, так тоже работает
+            // this.insertBlock('.second-block', 'form', 'addCategory', true);
+
+
+
+
+            this.taskList = new TaskList(this.data.getByName('tasks'), this.categoryList);
+            this.insertBlock('.third-block', 'task', 'block', false);
+
             this.categoryForm = categoryForm;
 
             this.insertBlock('.first-block', 'category', 'block', true);
@@ -65,6 +79,7 @@ const app = {
                 break;
             }
             case 'task': {
+                usedObj = this.taskList;
                 break;
             }
             case 'form': {

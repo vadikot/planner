@@ -1,10 +1,10 @@
 export default class List {
 
-    constructor(items) {
-        this._items = this.parseDataToObj(items);
+    constructor(items, categories) {
+        this._items = this.parseDataToObj(items, categories);
     }
 
-    parseDataToObj(items) {
+    parseDataToObj(items, subItems) {
         {
             throw ": Class extended from \"List\" must implement the parseDataToObj method"
         }
