@@ -6,11 +6,11 @@ export default class CategoryList extends List {
         super(items);
     }
 
-    addNewCategory(...fields) {
+    addNewCategory(fields) {
         const newTask = new Category(
             Date.now(),
-            fields[0],
-            fields[1],
+            fields['title'],
+            fields['description'],
             this.getLength() + 1
         );
 
@@ -96,7 +96,7 @@ export default class CategoryList extends List {
                     <select name="categories">
                         ${that.getAllItems().reduce((str,item)=> str+'<option value="'+item.id+'">'+item.title+'</option>', '')}
                     </select>
-                   `
+                   `;
         },
 
         categoryEditForm(that, category) {

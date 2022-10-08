@@ -1,6 +1,7 @@
 export const categoryForm = {
     template: `
-            <form class="category__form" name="categoryForm">
+            <form class="category__form form-add" name="categoryForm">
+                <h3 class="form-title">Add new category</h3>
                 <input class="category__form__input input" type="text" placeholder="title" name="title" required>
                 <input class="category__form__input input" type="text" placeholder="description" name="description">
                 <button class="category__form__btn-add" type="submit">add</button>
@@ -53,7 +54,10 @@ export const categoryForm = {
                     }
                 }
             } else {
-                thisApp.categoryList.addNewCategory(fieldsState.fields.title, fieldsState.fields.description);
+                thisApp.categoryList.addNewCategory({
+                    title: fieldsState.fields.title,
+                    description: fieldsState.fields.description,
+                });
                 formElements['title'].value = '';
                 formElements['description'].value = '';
 
