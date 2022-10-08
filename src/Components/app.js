@@ -19,7 +19,7 @@ const app = {
 
             // insert TaskList
             this.taskList = new TaskList(this.data.getByName('tasks'), this.categoryList);
-            this.insertBlock('.fourth-block', 'task', 'block', false);
+            this.insertBlock('.fourth-block', 'task', 'block', true);
 
             // insert form for adding a CATEGORY
             this.categoryForm = categoryForm;
