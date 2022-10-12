@@ -37,3 +37,16 @@ p {
   margin-top: 5px;
   text-align: center;
 }
+.start {
+  background: yellow;
+}
+.pause {
+  background: orange;
+}
+.done {
+  background: green;
+}
+.disable-events {
+  pointer-events: none;
+  background: dimgray;
+}

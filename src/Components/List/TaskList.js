@@ -2,8 +2,22 @@ import List from "./List";
 import Task from "../Task";
 
 export default class TaskList extends List {
-    constructor(items,categories) {
-        super(items,categories);
+    constructor(items, categories) {
+        super(items, categories);
+    }
+
+    getAllByCategoryId(id) {
+        return this._items.filter(item => parseInt(item.category.id) === parseInt(id));
+    }
+
+    isCategoryEmpty(categoryId) {
+        const foundItem = this._items.findIndex(item => parseInt(item.category.id) === parseInt(categoryId));
+
+        return (foundItem === -1);
+    }
+
+    getItemCountByCategoryId() {
+
     }
 
     addNewTask(fields) {
@@ -12,10 +26,8 @@ export default class TaskList extends List {
             fields['title'],
             fields['description'],
             fields['category'],
-            '',
-            '',
-            '',
-            '',
+            fields['isCompleted'],
+            fields['timer'],
             '',
             '',
             '',
@@ -27,16 +39,14 @@ export default class TaskList extends List {
 
     parseDataToObj(items, categoryList) {
         return items.map((item, index) => {
+            // maybe we need use 'addNewTask'
             return new Task(
                 item['id'],
                 item['title'],
                 item['description'],
                 categoryList.getItemById(item['category'].id),
-                '',
-                '',
-                '',
-                '',
-                '',
+                item['isCompleted'],
+                item['timer'],
                 '',
                 '',
                 '',
@@ -72,12 +82,68 @@ export default class TaskList extends List {
             this.data.saveData('tasks', this.taskList.getAllItems());
         }
 
+        if (event.target.classList.contains('task-isCompleted')) {
+            const clickedTask = this.taskList.getItemById(clickedItemID);
+
+            clickedTask.isCompleted = !clickedTask.isCompleted;
+
+            this.data.saveData('tasks', this.taskList.getAllItems());
+
+            const clickedTaskEl = event.target.closest('.item');
+            clickedTaskEl.classList.toggle('done');
+            event.target.innerHTML = clickedTask.isCompleted ? 'cancel' : 'done';
+
+        }
+
+        if (event.target.classList.contains('task-timer')) {
+
+            const clickedTask = this.taskList.getItemById(clickedItemID);
+
+            const clickedTaskEl = event.target.closest('.item');
+
+            switch (clickedTask.timer.status) {
+                case "none":
+                    clickedTask.timer.startTime = Date.now();
+                    clickedTaskEl.classList.add('start');
+                    event.target.innerHTML = 'Pause timer';
+                    clickedTask.timer.status = 'started';
+
+                    break;
+                case "started":
+                    const timeMS = Date.now() - parseInt(clickedTask.timer.startTime);
+
+                    clickedTask.timer.runTimeSec = parseInt(clickedTask.timer.runTimeSec) + (timeMS / 1000) ;
+
+                    clickedTaskEl.classList.add('pause');
+                    clickedTaskEl.classList.remove('start');
+
+                    clickedTask.timer.status = 'paused';
+                    event.target.innerHTML = 'Continue timer';
+                    break;
+                case "paused":
+
+                    clickedTask.timer.startTime = Date.now();
+                    // clickedTaskEl.classList.toggle('start pause');
+                    clickedTaskEl.classList.add('start');
+                    clickedTaskEl.classList.remove('pause');
+
+                    event.target.innerHTML = 'Pause timer';
+                    clickedTask.timer.status = 'started';
+
+                    break;
+            }
+
+
+            this.data.saveData('tasks', this.taskList.getAllItems());
+
+
+        }
+
+
     }
 
     openTaskEditForm(id, event, thisApp) {
         const changedTask = this.getItemById(id);
-
-        console.log(changedTask);
 
         const categorySelect = thisApp.categoryList.render('select');
 

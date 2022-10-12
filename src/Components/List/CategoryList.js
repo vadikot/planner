@@ -30,9 +30,16 @@ export default class CategoryList extends List {
         const clickedItemID = event.target.dataset.id;
 
         if (event.target.classList.contains('category__item__btn-remove')) {
-            this.categoryList.removeItemById(clickedItemID);
-            this.categoryList.updateAllNodeItems();
-            this.data.saveData('categories', this.categoryList.getAllItems());
+            const isCategoryEmpty = this.taskList.isCategoryEmpty(clickedItemID);
+
+            if (isCategoryEmpty) {
+                this.categoryList.removeItemById(clickedItemID);
+                this.categoryList.updateAllNodeItems();
+                this.data.saveData('categories', this.categoryList.getAllItems());
+            } else {
+                console.log('Category has not be deleted, it is not empty!');
+            }
+
         }
 
         if (event.target.classList.contains('category__item__btn-edit')) {

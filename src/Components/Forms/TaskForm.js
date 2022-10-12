@@ -1,16 +1,23 @@
 export const taskForm = {
     template(categorySelectEl) {
-        return `
-                <form class="task__form form-add" name="taskForm">
-                    <h3 class="form-title">Add new task</h3>
-                    <input class="task__form__input input" type="text" placeholder="title" name="title" required>
-                    <input class="task__form__input input" type="text" placeholder="description" name="description">
-                    ${categorySelectEl}
-                    <button class="task__form__btn-add" type="submit">add</button>
-                    <div class="task__form__btn-close btn">Close form</div>
-                </form>
-               `;
-        },
+        const isHasCategory = categorySelectEl.includes('<option');
+        if (isHasCategory) {
+            return `
+                    <form class="task__form form-add" name="taskForm">
+                        <h3 class="form-title">Add new task</h3>
+                        <input class="task__form__input input" type="text" placeholder="title" name="title" required>
+                        <input class="task__form__input input" type="text" placeholder="description" name="description">
+                        ${categorySelectEl}
+                        <button class="task__form__btn-add" type="submit">add</button>
+                        <div class="task__form__btn-close btn">Close form</div>
+                    </form>
+                   `;
+        } else {
+            return `
+                      <h3 class="form-title">Sorry, but you can't add a new task. First you need to add a category and then refresh the page</h3>
+                   `;
+        }
+    },
 
     isFieldsEmpty(elements) {
         const title = elements['title'].value;
@@ -28,7 +35,7 @@ export const taskForm = {
             }
         }
 
-        const selectedCategoryIndex= elements['categories'].selectedIndex;
+        const selectedCategoryIndex = elements['categories'].selectedIndex;
         const selectedCategoryID = elements['categories'][selectedCategoryIndex].value;
 
         return {
@@ -70,6 +77,12 @@ export const taskForm = {
                         id: selectedCategory.id,
                         title: selectedCategory.title,
                     },
+                    isCompleted: false,
+                    timer: {
+                        status: 'none', // none / started / paused
+                        startTime: 0,
+                        runTimeSec: 0,
+                    }
                 });
 
                 formElements['title'].value = '';

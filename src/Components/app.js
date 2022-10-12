@@ -30,12 +30,6 @@ const app = {
             this.insertBlock('.second-block', 'task', 'form', true);
 
 
-            // categoryForm.render('.categories', this.data, this.categoryList);
-            this.insertBlock('.second-block', 'form', 'addCategory', true);
-
-
-
-
 
         } catch (e) {
             console.error(e);
