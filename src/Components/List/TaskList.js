@@ -57,10 +57,11 @@ export default class TaskList extends List {
 
     updateAllNodeItems() {
         const taskListEl = document.querySelector('.task__list');
-        taskListEl.innerHTML=this.render('list');
+        taskListEl.innerHTML = this.render('list');
     }
 
-    updateNodeItem() {}
+    updateNodeItem() {
+    }
 
     // in listener we bind app this, otherwise we can't work with DATA object
     // or better send "this" like "that"  -   ??????
@@ -112,7 +113,7 @@ export default class TaskList extends List {
                 case "started":
                     const timeMS = Date.now() - parseInt(clickedTask.timer.startTime);
 
-                    clickedTask.timer.runTimeSec = parseInt(clickedTask.timer.runTimeSec) + (timeMS / 1000) ;
+                    clickedTask.timer.runTimeSec = parseInt(clickedTask.timer.runTimeSec) + (timeMS / 1000);
 
                     clickedTaskEl.classList.add('pause');
                     clickedTaskEl.classList.remove('start');
@@ -147,21 +148,21 @@ export default class TaskList extends List {
 
         const categorySelect = thisApp.categoryList.render('select');
 
-        const taskEditForm= this.render('taskEditForm', changedTask, categorySelect);
+        const taskEditForm = this.render('taskEditForm', changedTask, categorySelect);
         const changedItemEl = event.target.closest('.task__list__item');
 
-        changedItemEl.insertAdjacentHTML('afterbegin',taskEditForm);
+        changedItemEl.insertAdjacentHTML('afterbegin', taskEditForm);
     }
 
     saveChanges(id, thisApp) {
         const changedTask = this.getItemById(id)
-        const formName = 'taskForm'+id;
+        const formName = 'taskForm' + id;
         const formElements = document.forms[formName].elements;
 
         changedTask.title = formElements['title'].value;
         changedTask.description = formElements['description'].value;
 
-        const selectedCategoryIndex= formElements['categories'].selectedIndex;
+        const selectedCategoryIndex = formElements['categories'].selectedIndex;
         const selectedCategoryID = formElements['categories'][selectedCategoryIndex].value;
         const selectedCategory = thisApp.categoryList.getItemById(selectedCategoryID);
 

@@ -28,7 +28,7 @@ export default class Task {
         }
         timerInfo.runTime = this.getRunTime();
 
-        return timerInfo;2
+        return timerInfo;
     }
     getRunTime() {
         const min = Math.floor(this.timer.runTimeSec / 60);
