@@ -97,49 +97,24 @@ export default class TaskList extends List {
         }
 
         if (event.target.classList.contains('task-timer')) {
-
             const clickedTask = this.taskList.getItemById(clickedItemID);
-
             const clickedTaskEl = event.target.closest('.item');
 
             switch (clickedTask.timer.status) {
                 case "none":
-                    clickedTask.timer.startTime = Date.now();
-                    clickedTaskEl.classList.add('start');
-                    event.target.innerHTML = 'Pause timer';
-                    clickedTask.timer.status = 'started';
-
+                    // in 'pause' case the same code
+                    clickedTask.timer.start(clickedTaskEl, event.target);
                     break;
                 case "started":
-                    const timeMS = Date.now() - parseInt(clickedTask.timer.startTime);
-
-                    clickedTask.timer.runTimeSec = parseInt(clickedTask.timer.runTimeSec) + (timeMS / 1000);
-
-                    clickedTaskEl.classList.add('pause');
-                    clickedTaskEl.classList.remove('start');
-
-                    clickedTask.timer.status = 'paused';
-                    event.target.innerHTML = 'Continue timer';
+                    clickedTask.timer.stop(clickedTaskEl, event.target);
                     break;
                 case "paused":
-
-                    clickedTask.timer.startTime = Date.now();
-                    // clickedTaskEl.classList.toggle('start pause');
-                    clickedTaskEl.classList.add('start');
-                    clickedTaskEl.classList.remove('pause');
-
-                    event.target.innerHTML = 'Pause timer';
-                    clickedTask.timer.status = 'started';
-
+                    clickedTask.timer.start(clickedTaskEl, event.target);
                     break;
             }
 
-
             this.data.saveData('tasks', this.taskList.getAllItems());
-
-
         }
-
 
     }
 
